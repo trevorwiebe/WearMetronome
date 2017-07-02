@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+                android:background="#9e9e9e"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/enter_bpm_tv"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        tools:text="Enter BPM"
+        android:text="Enter BPM"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/beats_per_minute"
+        android:ems="2"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:backgroundTint="@color/accentColor"
+        android:layout_below="@id/enter_bpm_tv"
+        android:inputType="number"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/start_btn"
+        android:onClick="start"
+        android:text="Start"
+        android:background="#01579b"
+        android:textColor="@color/white"
+        android:layout_below="@id/beats_per_minute"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/stop_btn"
+        android:onClick="stop"
+        android:text="Stop"
+        android:textColor="@color/white"
+        android:background="#01579b"
+        android:layout_below="@id/beats_per_minute"
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
