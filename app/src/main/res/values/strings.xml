@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">WearMetronome</string>
-    <string name="hello_round">Hello Round World!</string>
-    <string name="hello_square">Hello Square World!</string>
+
+    <string name="start_btn">Start</string>
+    <string name="stop_btn">Stop</string>
+    <string name="enter_bpm">Enter BPM</string>
 </resources>

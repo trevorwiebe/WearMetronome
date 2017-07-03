@@ -93,53 +93,9 @@ public class MainActivity extends WearableActivity {
 
                         float delta = -RotaryEncoder.getRotaryAxisValue(event) * RotaryEncoder.getScaledScrollFactor(MainActivity.this);
 
-
                         num = Math.round(delta);
 
-
                         oldTime = timeNow;
-//
-//                        if (num > 10) {
-//                            Log.d(TAG, "onGenericMotion: here 100");
-//                            num = num + 100;
-//                        }else if(num > 11){
-//                            Log.d(TAG, "onGenericMotion: here 90");
-//                            num = num + 90;
-//                        }else if(num > 10){
-//                            Log.d(TAG, "onGenericMotion: here 80");
-//                            num = num + 80;
-//                        }else if(num > 9){
-//                            Log.d(TAG, "onGenericMotion: here 70");
-//                            num = num + 70;
-//                        }else if(num > 8){
-//                            Log.d(TAG, "onGenericMotion: here 60");
-//                            num = num + 60;
-//                        }else if(num > 7){
-//                            Log.d(TAG, "onGenericMotion: here 50");
-//                            num = num + 50;
-//                        }else if(num > 6){
-//                            Log.d(TAG, "onGenericMotion: here 40");
-//                            num = num + 40;
-//                        }else if(num > 5){
-//                            Log.d(TAG, "onGenericMotion: here 30");
-//                            num = num + 30;
-//                        }else if(num > 4){
-//                            Log.d(TAG, "onGenericMotion: here 20");
-//                            num = num + 20;
-//                        }else{
-//                            Log.d(TAG, "onGenericMotion: here -1");
-//                            num = num - 1;
-//                        }
-//                        if(num > 2){
-//                            reCheckSensors = 200;
-//                            num = num * 3;
-//                        }else if(num > 5){
-//                            reCheckSensors = 75;
-//                            num = num * 5;
-//                        }else if(num > 10){
-//                            reCheckSensors = 0;
-//                            num = num * 7;
-//                        }
 
                         whatToSetBeatPerMin = whatToSetBeatPerMin + num - 1;
 
@@ -154,9 +110,29 @@ public class MainActivity extends WearableActivity {
     }
 
     @Override
+    public void onEnterAmbient(Bundle ambientDetails) {
+        super.onEnterAmbient(ambientDetails);
+    }
+
+    @Override
+    public void onExitAmbient() {
+        super.onExitAmbient();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         mHandler.removeCallbacksAndMessages(null);
+    }
+
+    public void plus(View view){
+        int num = Integer.parseInt(mBeatsPerMinute.getText().toString());
+        mBeatsPerMinute.setText(Integer.toString(num++));
+    }
+
+    public void minus(View view){
+        int num = Integer.parseInt(mBeatsPerMinute.getText().toString());
+        mBeatsPerMinute.setText(Integer.toString(num--));
     }
 
     public void start(View view) {
