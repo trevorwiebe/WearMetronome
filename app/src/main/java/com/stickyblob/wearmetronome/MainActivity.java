@@ -127,12 +127,14 @@ public class MainActivity extends WearableActivity {
 
     public void plus(View view){
         int num = Integer.parseInt(mBeatsPerMinute.getText().toString());
-        mBeatsPerMinute.setText(Integer.toString(num++));
+        num = num + 1;
+        mBeatsPerMinute.setText(Integer.toString(num));
     }
 
     public void minus(View view){
         int num = Integer.parseInt(mBeatsPerMinute.getText().toString());
-        mBeatsPerMinute.setText(Integer.toString(num--));
+        num = num - 1;
+        mBeatsPerMinute.setText(Integer.toString(num));
     }
 
     public void start(View view) {
