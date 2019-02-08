@@ -8,6 +8,7 @@ import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.input.RotaryEncoder;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,7 @@ public class MainActivity extends WearableActivity {
     private int whatToSetBeatPerMin = 0;
     private long reCheckSensors = 45;
     private int num;
+    private boolean shouldRestart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +50,17 @@ public class MainActivity extends WearableActivity {
         mRunnable = new Runnable() {
             @Override
             public void run() {
-                delay = getMillisFromEditText();
-                mVibrator.vibrate(delay / 5);
-                mHandler.postDelayed(this, delay);
+                int time = getMillisFromEditText();
+                delay = time / 5;
+                if(delay > 100){
+                    delay = 100;
+                }
+                if(delay < 50){
+                    delay = 50;
+                }
+                Log.d(TAG, "run: delay = " + delay);
+                mVibrator.vibrate(delay);
+                mHandler.postDelayed(this, time);
             }
         };
 
@@ -67,9 +77,21 @@ public class MainActivity extends WearableActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().equals("")) {
+                if (s.toString().equals("")){
+                    mHandler.removeCallbacksAndMessages(null);
+                    showStartBtn();
                     return;
                 }
+
+                if(Integer.parseInt(s.toString()) > 35){
+                    if(shouldRestart) {
+                        if(!mHandler.hasMessages(0)) {
+                            showStopBtn();
+                            mHandler.postDelayed(mRunnable, 150);
+                        }
+                    }
+                }
+
                 if (Integer.parseInt(s.toString()) > 400) {
                     mBeatsPerMinute.setText("400");
                     whatToSetBeatPerMin = 400;
@@ -77,6 +99,8 @@ public class MainActivity extends WearableActivity {
 
                 if (Integer.parseInt(s.toString()) < 0) {
                     mBeatsPerMinute.setText("0");
+                    mHandler.removeCallbacksAndMessages(null);
+                    showStartBtn();
                     whatToSetBeatPerMin = 0;
                 }
             }
@@ -126,12 +150,18 @@ public class MainActivity extends WearableActivity {
     }
 
     public void plus(View view){
+        if(mBeatsPerMinute.getText().toString().equals("")){
+            mBeatsPerMinute.setText("1");
+        }
         int num = Integer.parseInt(mBeatsPerMinute.getText().toString());
         num = num + 1;
         mBeatsPerMinute.setText(Integer.toString(num));
     }
 
     public void minus(View view){
+        if(mBeatsPerMinute.getText().toString().equals("")){
+            mBeatsPerMinute.setText("0");
+        }
         int num = Integer.parseInt(mBeatsPerMinute.getText().toString());
         num = num - 1;
         mBeatsPerMinute.setText(Integer.toString(num));
@@ -139,11 +169,13 @@ public class MainActivity extends WearableActivity {
 
     public void start(View view) {
 
-        showStopBtn();
-
         if (mBeatsPerMinute.getText().toString().equals("")) {
             return;
+        }else if(mBeatsPerMinute.getText().toString().equals("0")){
+            return;
         }
+        showStopBtn();
+        shouldRestart = true;
         delay = getMillisFromEditText();
         mHandler.postDelayed(mRunnable, delay);
     }
@@ -151,6 +183,7 @@ public class MainActivity extends WearableActivity {
     public void stop(View view) {
 
         showStartBtn();
+        shouldRestart = false;
         mHandler.removeCallbacksAndMessages(null);
     }
 
